@@ -1,0 +1,50 @@
+# Ignorar el entorno virtual
+.venv/
+
+# Ignorar archivos temporales de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignorar archivos de configuración y caché de Flask
+instance/
+*.log
+
+# Ignorar archivos de bases de datos SQLite (por si usas alguna temporalmente)
+*.sqlite3
+
+# Ignorar archivos de compilación
+build/
+dist/
+*.egg-info/
+
+# Ignorar configuraciones de IDEs y editores de texto
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignorar configuraciones del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos temporales de testeo
+*.coverage
+.tox/
+.nox/
+
+# Ignorar archivos generados de documentación
+docs/_build/
+
+# Ignorar archivos de frontend
+frontend/staticfiles/
+frontend/mediafiles/
+node_modules/
+
+# Ignorar archivos específicos de Django (si aplica)
+frontend/db.sqlite3
+frontend/.env
+
+# Ignorar dependencias externas no necesarias
+*.lock
