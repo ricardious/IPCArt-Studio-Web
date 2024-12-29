@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .header::before {
+    @apply absolute top-0 left-[-100%] w-full h-full;
+    content: "";
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 0;
+  }
+
+  .header:hover::before {
+    left: 100%;
+  }
+
+  /* Toast Styles */
+  .toast-container {
+    @apply fixed right-4 z-50;
+    top: calc(5rem + 8px); /* Ajusta 5rem según la altura del header y 8px como margen */
+  }
+  
+  .animate-toast {
+    animation: slideIn 0.3s ease-in-out forwards,
+               fadeOut 0.5s ease-in-out 2.5s forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      display: none;
+    }
+  }
+  
+}
