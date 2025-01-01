@@ -1,0 +1,66 @@
+{# statistics.html #}
+{% extends 'base_admin.html' %}
+
+{% block title %}Statistics - IPCArt-Studio{% endblock %}
+
+{% block content %}
+<div class="ml-[110px] p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Dashboard Statistics</h1>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400">Total Users</h3>
+                    <i class='bx bxs-user text-2xl text-blue-400'></i>
+                </div>
+                <p class="text-3xl font-bold mt-2">{{ total_users }}</p>
+                <p class="text-sm text-green-400 mt-2">↑ 12% from last month</p>
+            </div>
+
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400">XML Files</h3>
+                    <i class='bx bxs-file text-2xl text-purple-400'></i>
+                </div>
+                <p class="text-3xl font-bold mt-2">{{ total_files }}</p>
+                <p class="text-sm text-green-400 mt-2">↑ 8% from last month</p>
+            </div>
+
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400">Storage Used</h3>
+                    <i class='bx bxs-data text-2xl text-orange-400'></i>
+                </div>
+                <p class="text-3xl font-bold mt-2">{{ storage_used }}</p>
+                <p class="text-sm text-yellow-400 mt-2">70% of total capacity</p>
+            </div>
+
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-400">Active Users</h3>
+                    <i class='bx bxs-user-check text-2xl text-green-400'></i>
+                </div>
+                <p class="text-3xl font-bold mt-2">{{ active_users }}</p>
+                <p class="text-sm text-green-400 mt-2">↑ 5% from last week</p>
+            </div>
+        </div>
+
+        <!-- Charts Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">User Activity</h3>
+                <!-- Add chart here -->
+                <div class="h-64 bg-[rgba(255,255,255,0.05)] rounded-lg"></div>
+            </div>
+
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg p-6">
+                <h3 class="text-xl font-semibold mb-4">Storage Usage</h3>
+                <!-- Add chart here -->
+                <div class="h-64 bg-[rgba(255,255,255,0.05)] rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

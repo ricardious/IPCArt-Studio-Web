@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -11,10 +10,10 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body class="bg-[#1a1a1a] text-[#e4e4e4] font-title">
+<body class="text-[#e4e4e4] font-title bg-black">
     <div class="fixed inset-0 bg-cover bg-center bg-pixel -z-10"></div>
 
-    {% include 'components/header.html' %}
+    {% include 'components/user_sidebar.html' %}
 
     {% include 'partials/toasts.html' %}
 
@@ -22,9 +21,6 @@
         {% block content %}
         {% endblock %}
     </main>
-
-
-
 </body>
 
 </html>

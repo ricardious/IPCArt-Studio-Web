@@ -4,15 +4,19 @@
 @tailwind utilities;
 
 @layer components {
+
+  html {
+    font-family: 'Pixelify Sans', sans-serif;
+    color: white;
+  }
+
   .header::before {
     @apply absolute top-0 left-[-100%] w-full h-full;
     content: "";
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent);
     transition: left 0.5s ease;
     z-index: 0;
   }
@@ -24,33 +28,72 @@
   /* Toast Styles */
   .toast-container {
     @apply fixed right-4 z-50;
-    top: calc(5rem + 8px); /* Ajusta 5rem según la altura del header y 8px como margen */
+    top: calc(5rem + 8px);
   }
-  
+
   .animate-toast {
     animation: slideIn 0.3s ease-in-out forwards,
-               fadeOut 0.5s ease-in-out 2.5s forwards;
+      fadeOut 0.5s ease-in-out 2.5s forwards;
   }
-  
+
   @keyframes slideIn {
     from {
       transform: translateX(100%);
       opacity: 0;
     }
+
     to {
       transform: translateX(0);
       opacity: 1;
     }
   }
-  
+
   @keyframes fadeOut {
     from {
       opacity: 1;
     }
+
     to {
       opacity: 0;
       display: none;
     }
   }
-  
+
+  #invader {
+    font-size: 24px;
+    color: #ffffff;
+    display: none;
+  }
+
+  .group:hover #invader {
+    display: block;
+  }
+
+  @keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    .animate-fade-in-up {
+        animation: fade-in-up 0.6s ease-out forwards;
+    }
+
+    .animation-delay-200 {
+        animation-delay: 0.2s;
+    }
+
+    .animation-delay-400 {
+        animation-delay: 0.4s;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 }
