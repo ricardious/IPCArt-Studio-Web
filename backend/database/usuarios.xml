@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0"?>
 <usuarios>
 	<usuario id="IPC-001" pwd="3267">
 		<NombreCompleto>Carlos Ruiz</NombreCompleto>
@@ -19,7 +19,8 @@
 		<CorreoElectronico>maria.lopez@mail.com</CorreoElectronico>
 		<NumeroTelefono>23637281</NumeroTelefono>
 		<Direccion>Quetzaltenango, Guatemala</Direccion>
-		<perfil>https://wallpapers.com/images/featured/fotos-de-perfil-de-dibujos-animados-cvyu6zeeolasudk4.jpg</perfil>
+		<perfil>
+			https://wallpapers.com/images/featured/fotos-de-perfil-de-dibujos-animados-cvyu6zeeolasudk4.jpg</perfil>
 	</usuario>
 	<usuario id="IPC-004" pwd="9153">
 		<NombreCompleto>Camila Sanchez</NombreCompleto>
@@ -47,14 +48,16 @@
 		<CorreoElectronico>carlos.ruiz@example.com</CorreoElectronico>
 		<NumeroTelefono>27595614</NumeroTelefono>
 		<Direccion>Coban, Guatemala</Direccion>
-		<perfil>https://static.vecteezy.com/system/resources/previews/034/478/373/non_2x/man-profile-caricature-illustration-vector.jpg</perfil>
+		<perfil>
+			https://static.vecteezy.com/system/resources/previews/034/478/373/non_2x/man-profile-caricature-illustration-vector.jpg</perfil>
 	</usuario>
 	<usuario id="IPC-008" pwd="4912">
 		<NombreCompleto>Diego Torres</NombreCompleto>
 		<CorreoElectronico>diego.torres@correo.com</CorreoElectronico>
 		<NumeroTelefono>17208214</NumeroTelefono>
 		<Direccion>Quetzaltenango, Guatemala</Direccion>
-		<perfil>https://static.vecteezy.com/system/resources/previews/009/749/751/non_2x/avatar-man-icon-cartoon-male-profile-mascot-illustration-head-face-business-user-logo-free-vector.jpg</perfil>
+		<perfil>
+			https://static.vecteezy.com/system/resources/previews/009/749/751/non_2x/avatar-man-icon-cartoon-male-profile-mascot-illustration-head-face-business-user-logo-free-vector.jpg</perfil>
 	</usuario>
 	<usuario id="IPC-009" pwd="3328">
 		<NombreCompleto>Luis Hernandez</NombreCompleto>
