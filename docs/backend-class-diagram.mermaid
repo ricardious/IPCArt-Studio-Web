@@ -1,0 +1,154 @@
+classDiagram
+    %% Main Application Classes
+    class Flask_App {
+        +config: Config
+        +init_routes()
+        +init_services()
+    }
+
+    class Config {
+        +DEBUG: bool
+        +SECRET_KEY: str
+        +DATABASE_PATH: str
+    }
+
+    %% Routes
+    class AdminRoutes {
+        +get_admin_dashboard()
+        +manage_users()
+        +manage_images()
+    }
+
+    class UserRoutes {
+        +get_user_profile()
+        +update_profile()
+        +get_user_images()
+    }
+
+    class ImageRoutes {
+        +upload_image()
+        +get_image()
+        +delete_image()
+    }
+
+    class AuthRoutes {
+        +login()
+        +register()
+        +logout()
+    }
+
+    %% Services
+    class AuthService {
+        +authenticate_user()
+        +create_user()
+        +validate_token()
+    }
+
+    class ImageService {
+        +process_image()
+        +store_image()
+        +retrieve_image()
+    }
+
+    class UserService {
+        +get_user()
+        +update_user()
+        +delete_user()
+    }
+
+    %% Models
+    class User {
+        +id: int
+        +username: str
+        +password: str
+        +email: str
+        +role: str
+    }
+
+    class Image {
+        +id: int
+        +user_id: int
+        +filename: str
+        +path: str
+        +timestamp: datetime
+    }
+
+    %% Sparse Matrix Classes
+    class SparseMatrix {
+        +rows: HeaderList
+        +columns: HeaderList
+        +insert(x, y, value)
+        +plot()
+        +plot_pixel_art()
+    }
+
+    class HeaderList {
+        +coordinate: str
+        +first: HeaderNode
+        +last: HeaderNode
+        +size: int
+        +insertHeaderNode()
+        +getHeader()
+        +showHeaders()
+    }
+
+    class HeaderNode {
+        +id: int
+        +next: HeaderNode
+        +previous: HeaderNode
+        +access: CellNode
+    }
+
+    class CellNode {
+        +x: int
+        +y: int
+        +value: str
+        +up: CellNode
+        +down: CellNode
+        +left: CellNode
+        +right: CellNode
+    }
+
+    %% Utils
+    class XMLParser {
+        +parse_file()
+        +save_file()
+    }
+
+    class ColorUtils {
+        +process_colors()
+        +validate_color()
+    }
+
+    class Validators {
+        +validate_email()
+        +validate_password()
+    }
+
+    %% Relationships
+    Flask_App *-- Config : contiene
+    Flask_App *-- AdminRoutes : contiene
+    Flask_App *-- UserRoutes : contiene
+    Flask_App *-- ImageRoutes : contiene
+    Flask_App *-- AuthRoutes : contiene
+
+    AdminRoutes o-- UserService : usa
+    AdminRoutes o-- ImageService : usa
+    UserRoutes o-- UserService : usa
+    ImageRoutes o-- ImageService : usa
+    AuthRoutes o-- AuthService : usa
+
+    UserService *-- User : gestiona
+    ImageService *-- Image : gestiona
+    ImageService o-- SparseMatrix : usa
+
+    SparseMatrix *-- HeaderList : contiene
+    HeaderList *-- HeaderNode : contiene
+    HeaderNode o-- CellNode : referencia
+    CellNode o-- CellNode : referencia
+
+    User --> Image : tiene >
+    UserService ..> XMLParser : usa
+    ImageService ..> XMLParser : usa
+    ImageService ..> ColorUtils : usa
+    AuthService ..> Validators : usa
