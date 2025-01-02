@@ -1,0 +1,97 @@
+{% extends 'base_user.html' %}
+
+{% block title %}Editor de Imágenes - IPCArt-Studio{% endblock %}
+
+{% block content %}
+<div class="ml-[110px] p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-white mb-2">Editor de Imágenes</h1>
+                <p class="text-gray-400">Aplica filtros y efectos a tus imágenes</p>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <form method="post" enctype="multipart/form-data" action="{% url 'image_editor' %}">
+            {% csrf_token %}
+            <div class="flex gap-4 mb-6">
+                <input name="image_id" type="text" placeholder="ID Imagen"
+                    class="px-4 py-2 bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+
+                <button type="submit" name="filter_type" value="grayscale"
+                    class="px-4 py-2 bg-gray-600/80 backdrop-blur-sm text-white rounded-lg hover:bg-gray-700/80 transition-colors">
+                    Escala de grises
+                </button>
+
+                <button type="submit" name="filter_type" value="sepia"
+                    class="px-4 py-2 bg-gray-600/80 backdrop-blur-sm text-white rounded-lg hover:bg-gray-700/80 transition-colors">
+                    Sepia
+                </button>
+            </div>
+        </form>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Original Image Area -->
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+                <!-- Toolbar -->
+                <div
+                    class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <span class="text-gray-300 text-sm">Imagen actual</span>
+                </div>
+
+                <!-- Image Content -->
+                <div class="p-4">
+                    <div
+                        class="w-full h-96 bg-gray-900/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+
+                        {% if original_image %}
+                        <img src="{{ original_image }}" alt="Original Image"
+                            class="max-w-full max-h-full object-contain">
+                        {% else %}
+                        <div class="text-gray-300">No image</div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processed Image Area -->
+            <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+                <!-- Toolbar -->
+                <div
+                    class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <span class="text-gray-300 text-sm">Imagen resultante</span>
+                </div>
+
+                <!-- Image Content -->
+                <div class="p-4">
+                    <div
+                        class="w-full h-96 bg-gray-900/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                        {% if processed_image %}
+                        <img src="{{ processed_image }}" alt="Processed Image"
+                            class="max-w-full max-h-full object-contain">
+                        {% else %}
+                        <div class="text-gray-300">No processed image</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+{% endblock %}
