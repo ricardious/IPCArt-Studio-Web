@@ -17,29 +17,33 @@
     <!-- Menú principal -->
     <ul class="list-none p-[0_15px]">
         <li class="my-[30px]">
-            <a href="#" class="flex items-center justify-center cursor-pointer group-hover:justify-start">
+            <a href="{% url 'gallery' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start">
                 <i class='bx bx-photo-album text-[30px] mr-0 group-hover:mr-[10px]'></i>
                 <p class="whitespace-nowrap hidden group-hover:block">Gallery</p>
             </a>
         </li>
 
         <li class="my-[30px]">
-            <a href="#" class="flex items-center justify-center cursor-pointer group-hover:justify-start">
+            <a href="{% url 'upload_image' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start">
                 <i class='bx bx-image-add text-[30px] mr-0 group-hover:mr-[10px]'></i>
                 <p class="whitespace-nowrap hidden group-hover:block">Upload Image</p>
             </a>
         </li>
 
         <li class="my-[30px]">
-            <a href="#" class="flex items-center justify-center cursor-pointer group-hover:justify-start">
+            <a href="{% url 'image_editor' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start">
                 <i class='bx bxs-edit text-[30px] mr-0 group-hover:mr-[10px]'></i>
                 <p class="whitespace-nowrap hidden group-hover:block">Image Editor</p>
             </a>
         </li>
 
         <li class="my-[30px]">
-            <a href="#" class="flex items-center justify-center cursor-pointer group-hover:justify-start">
-                <i class='bx bxs-help-circle text-[30px] mr-0 group-hover:mr-[10px]'></i>
+            <a href="{% url 'help' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start">
+                <i class='bx bx-help-circle text-[30px] mr-0 group-hover:mr-[10px]'></i>
                 <p class="whitespace-nowrap hidden group-hover:block">Help</p>
             </a>
         </li>
