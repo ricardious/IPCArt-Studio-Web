@@ -1,0 +1,47 @@
+{% extends 'base_user.html' %}
+
+{% block title %}Ayuda - IPCArt-Studio{% endblock %}
+
+{% block content %}
+<div class="ml-[110px] h-screen p-8">
+    <div class="grid grid-cols-2 gap-6 h-full">
+        <!-- Left Column -->
+        <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+            <div class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                </div>
+                <h2 class="text-white text-xl font-bold">Ayuda</h2>
+            </div>
+            <div class="p-4 text-gray-300 space-y-2">
+                <h3 class="font-bold mb-2">Hecho por:</h3>
+                <p>{{ nombre_alumno|default:"Nombre del alumno" }}</p>
+                <p>{{ carnet|default:"Carnet" }}</p>
+                <p>Introducción a la Programación y Computación 2 P</p>
+                <p>Vacaciones de diciembre 2024</p>
+                <p>{{ github|default:"Github del estudiante" }}</p>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+            <div class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                </div>
+                <h2 class="text-white text-xl font-bold">Documentación</h2>
+            </div>
+            <div class="p-4">
+                <div class="bg-gray-900/50 backdrop-blur-sm rounded-lg p-4 h-[calc(100vh-12rem)] overflow-y-auto text-gray-300"
+                    style="scrollbar-width: thin; scrollbar-color: rgba(75, 85, 99, 0.8) rgba(31, 41, 55, 0.5);">
+                    {{ documentacion|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
