@@ -1,0 +1,93 @@
+{% extends 'base_user.html' %}
+
+{% block title %}Cargar Imagen - IPCArt-Studio{% endblock %}
+
+{% block content %}
+<div class="ml-[110px] p-8">
+    <div class="max-w-6xl mx-auto">
+
+
+
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_image' %}">
+            {% csrf_token %}
+            <!-- Header -->
+            <div class="mb-8 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-white mb-2">Upload Image</h1>
+                    <p class="text-gray-400">Upload and process XML files to generate images</p>
+                </div>
+                <div class="space-x-4">
+                    <label for="file"
+                        class="px-4 py-2 bg-blue-600/80 backdrop-blur-sm text-white rounded-lg hover:bg-blue-700/80 transition-colors cursor-pointer inline-block">
+                        <span class="mr-2">↑</span> Upload File
+                    </label>
+                    <button type="submit" name="preview_file"
+                        class="px-4 py-2 bg-blue-600/80 backdrop-blur-sm text-white rounded-lg hover:bg-blue-700/80 transition-colors">
+                        <span class="mr-2">👁</span> View File
+                    </button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- XML Content Area -->
+                <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+                    <!-- Toolbar -->
+                    <div
+                        class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <span class="text-gray-300 text-sm">XML Content</span>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-4">
+                        <input type="file" id="file" name="file" accept=".xml" class="hidden">
+                        <textarea name="xml_content" readonly
+                            class="w-full h-96 bg-gray-900/50 backdrop-blur-sm text-gray-300 font-mono text-sm rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+                            style="scrollbar-width: thin; scrollbar-color: rgba(75, 85, 99, 0.8) rgba(31, 41, 55, 0.5);"
+                            placeholder="<?xml version='1.0' encoding='utf-8'?>
+<!-- XML for the image -->">{% if xml_content %}{{ xml_content }}{% endif %}</textarea>
+                    </div>
+                </div>
+
+                <!-- Image Preview Area -->
+                <div class="bg-[rgba(255,255,255,0.1)] backdrop-blur-[5px] rounded-xl shadow-xl overflow-hidden">
+                    <!-- Toolbar -->
+                    <div
+                        class="bg-[rgba(255,255,255,0.05)] backdrop-blur-[5px] px-4 py-2 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <span class="text-gray-300 text-sm">Image Preview</span>
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="p-4">
+                        <div
+                            class="w-full h-96 bg-gray-900/50 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                            {% if image %}
+                            <img src="data:image/svg+xml;base64,{{ image }}" alt="Processed Image"
+                                class="max-w-full max-h-full">
+                            {% else %}
+                            <p class="text-gray-300 text-center">No image has been uploaded.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button type="submit" name="process_xml"
+                    class="px-4 py-2 bg-green-600/80 backdrop-blur-sm text-white rounded-lg hover:bg-green-700/80 transition-colors">
+                    <span class="mr-2">⟳</span> Process XML
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
