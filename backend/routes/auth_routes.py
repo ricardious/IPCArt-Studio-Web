@@ -4,7 +4,7 @@ from services.auth_service import AuthService
 from database.db_manager import DBManager
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(os.path.dirname(current_dir), "database", "users.xml")
+db_path = os.path.join(os.path.dirname(current_dir), "database", "usuarios.xml")
 
 # Configuración del archivo XML y AuthService
 db_manager = DBManager(db_path)

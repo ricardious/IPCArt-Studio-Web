@@ -17,6 +17,7 @@ class AuthService:
                 "status": "success",
                 "message": f"Welcome Admin!",
                 "role": "admin",
+                "user_id": "admin",
             }
 
         # Validar credenciales de usuarios en el archivo XML
@@ -26,5 +27,6 @@ class AuthService:
                 "status": "success",
                 "message": f"Welcome {user.full_name}!",
                 "role": "user",
+                "user_id": user.user_id,
             }
         return {"status": "error", "message": "Invalid username or password."}
