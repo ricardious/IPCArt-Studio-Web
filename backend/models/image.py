@@ -10,7 +10,7 @@ class Image:
         edited (bool): Indicates if the image has been edited (default is False).
     """
 
-    def __init__(self, id, user_id, name, pixels):
+    def __init__(self, id, user_id, name, pixels, edited=False):
         """
         Initializes an Image instance.
 
@@ -24,4 +24,4 @@ class Image:
         self.user_id = user_id
         self.name = name
         self.pixels = pixels
-        self.edited = False  # Default value for edited status
+        self.edited = edited
