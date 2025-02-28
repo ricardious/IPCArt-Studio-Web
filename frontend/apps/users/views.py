@@ -3,14 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+import plotly.graph_objs as go
+from plotly.offline import plot
 
-GLOBAL_CONTEXT = {"file_content": None, "binary_file": None, "file_name": None}
-ENDPOINT = "http://localhost:4000/"
-
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-import requests
 
 GLOBAL_CONTEXT = {"file_content": None, "binary_file": None, "file_name": None}
 ENDPOINT = "http://localhost:4000/"
@@ -93,7 +88,7 @@ def bulk_upload(request):
         for file in uploaded_files:
             try:
                 file_content = file.read()
-
+                print(file_content)
                 try:
                     decoded_content = file_content.decode("utf-8")
                     GLOBAL_CONTEXT["file_content"] = decoded_content
@@ -179,7 +174,86 @@ def view_xml(request):
 
 
 def statistics(request):
-    return render(request, "users/statistics.html")
+    # Definir las URLs de los endpoints en Flask
+    top_users_url = f"{ENDPOINT}statistics/top-users"
+    edited_images_url = f"{ENDPOINT}statistics/edited-images"
+
+    try:
+        # Realizar solicitudes GET a los endpoints de Flask
+        top_users_response = requests.get(top_users_url)
+        edited_images_response = requests.get(edited_images_url)
+
+        # Verificar el estado de las respuestas
+        if (
+            top_users_response.status_code == 200
+            and edited_images_response.status_code == 200
+        ):
+            top_users_data = top_users_response.json().get("data", [])
+            edited_images_data = edited_images_response.json().get("data", [])
+
+            # Preparar datos para los gráficos
+            # Gráfico 1: Top 3 usuarios con más imágenes cargadas
+            usernames_top = [user["user_id"] for user in top_users_data]
+            images_uploaded = [user["image_count"] for user in top_users_data]
+
+            bar1 = go.Bar(
+                x=usernames_top,
+                y=images_uploaded,
+                name="Top 3 Users with Most Uploaded Images",
+            )
+
+            # Gráfico 2: Cantidad de imágenes editadas por usuario en orden descendente
+            usernames_edit = [user["user_id"] for user in edited_images_data]
+            images_edited_count = [user["edited_count"] for user in edited_images_data]
+
+            bar2 = go.Bar(
+                x=usernames_edit,
+                y=images_edited_count,
+                name="Images Edited by Each User",
+                marker=dict(color="mediumpurple"),
+            )
+
+            # Configurar los gráficos
+            layout1 = go.Layout(
+                plot_bgcolor="rgba(0,0,0,0)",  # Fondo del gráfico transparente
+                paper_bgcolor="rgba(0,0,0,0)",  # Fondo del contenedor transparente
+                font=dict(color="white"),  # Texto en blanco para modo oscuro
+                autosize=True,
+            )
+            layout2 = go.Layout(
+                plot_bgcolor="rgba(0,0,0,0)",  # Fondo del gráfico transparente
+                paper_bgcolor="rgba(0,0,0,0)",  # Fondo del contenedor transparente
+                font=dict(color="white"),  # Texto en blanco para modo oscuro
+                autosize=True,
+            )
+
+            # Crear figuras de los gráficos
+            fig1 = go.Figure(data=[bar1], layout=layout1)
+            fig2 = go.Figure(data=[bar2], layout=layout2)
+
+            # Convertir gráficos a div
+            plot_div1 = plot(fig1, include_plotlyjs=False, output_type="div")
+            plot_div2 = plot(fig2, include_plotlyjs=False, output_type="div")
+
+            # Incluir estilo inline para ajustarlo al contenedor
+            plot_div1 = f'<div style="width: 100%; height: 100%;">{plot_div1}</div>'
+            plot_div2 = f'<div style="width: 100%; height: 100%;">{plot_div2}</div>'
+
+            # Pasar los gráficos al contexto
+            context = {
+                "plot_div1": plot_div1,
+                "plot_div2": plot_div2,
+            }
+
+            return render(request, "users/statistics.html", context)
+        else:
+            # Manejar errores si las respuestas no son exitosas
+            messages.error(request, "Failed to fetch statistics from Flask backend.")
+            return render(request, "users/statistics.html", {})
+    except requests.exceptions.RequestException as e:
+        # Manejar errores de conexión
+        messages.error(request, f"Error connecting to Flask backend: {e}")
+        return render(request, "users/statistics.html", {})
 
 
 def logout(request):

@@ -96,4 +96,13 @@
     .animate-pulse-slow {
         animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
+
+    .modal {
+        @apply hidden fixed top-0 left-0 z-[150] w-screen h-screen bg-black/70 justify-center items-center;
+    }
+
+    .modal:target {
+      @apply flex;
+    }
+
 }

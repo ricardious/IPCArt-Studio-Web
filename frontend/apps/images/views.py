@@ -13,8 +13,28 @@ def gallery(request):
         messages.error(request, "Please log in to access this page.")
         return redirect("/login")
 
-    # Renderizar la galería con datos del usuario
-    return render(request, "images/gallery.html", {"user": user})
+    context = {"user": user, "images": []}
+
+    try:
+        flask_url = f"{ENDPOINT}image/gallery"
+        response = requests.get(flask_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("success"):
+                context["images"] = data.get("gallery", [])
+            else:
+                messages.error(
+                    request, data.get("message", "Unknown error retrieving gallery.")
+                )
+        else:
+            messages.error(request, "Failed to retrieve gallery from server.")
+    except requests.RequestException as e:
+        messages.error(request, f"Connection error: {str(e)}")
+    except Exception as e:
+        messages.error(request, f"Unexpected error: {str(e)}")
+
+    return render(request, "images/gallery.html", context)
 
 
 def upload(request):
@@ -98,8 +118,10 @@ def image_editor(request):
             messages.error(request, "Please enter an image ID.")
             return render(request, "images/image_editor.html", context)
 
-        if filter_type not in ["grayscale", "sepia"]:
-            messages.error(request, "Invalid filter type. Use 'grayscale' or 'sepia'.")
+        if filter_type not in ["grayscale", "sepia", "negative"]:
+            messages.error(
+                request, "Invalid filter type. Use 'grayscale','sepia', or 'negative'."
+            )
             return render(request, "images/image_editor.html", context)
 
         try:
