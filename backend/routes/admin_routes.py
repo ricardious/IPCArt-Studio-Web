@@ -23,7 +23,7 @@ def upload_users():
             return jsonify({"status": "error", "message": "No file provided"}), 400
 
         file = request.files["file"]
-
+        print(file)
         if file.filename == "":
             return jsonify({"status": "error", "message": "No file selected"}), 400
 
@@ -31,7 +31,9 @@ def upload_users():
             return jsonify({"status": "error", "message": "Invalid file format"}), 400
 
         xml_content = file.read().decode("utf-8")
+        print(xml_content)
         users = parse_users(xml_content)
+        print(users)
 
         users_service.save_users(users)
         return (

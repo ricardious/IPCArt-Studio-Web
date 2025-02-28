@@ -96,7 +96,7 @@ def transform_image(image_id, filter_type):
                 {
                     "success": True,
                     "image_id": result["image_id"],
-                    "original_graph": result["original_graph"],
+                    "original_graph": image_service.get_image_graph(image_id),
                     "transformed_graph": result["transformed_graph"],
                     "message": "Image transformed successfully.",
                 }
@@ -105,6 +105,50 @@ def transform_image(image_id, filter_type):
         )
     except ValueError as e:
         return jsonify({"success": False, "message": str(e)}), 400
+    except Exception as e:
+        return (
+            jsonify({"success": False, "message": f"Internal Server Error: {e}"}),
+            500,
+        )
+
+
+@image_router.route("/gallery", methods=["GET"])
+def get_all_gallery():
+    """
+    Retrieves the gallery of all images.
+
+    Returns:
+        JSON response containing:
+            - success (bool): Whether the retrieval was successful.
+            - gallery (list): List of image metadata (id, user_id, base64).
+            - message (str): Any relevant message or error details.
+    """
+    try:
+        # Call the service to get all gallery images
+        gallery = image_service.get_all_gallery_images()
+
+        if not gallery:
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "gallery": [],
+                        "message": "No images found.",
+                    }
+                ),
+                200,
+            )
+
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "gallery": gallery,
+                    "message": "Gallery retrieved successfully.",
+                }
+            ),
+            200,
+        )
     except Exception as e:
         return (
             jsonify({"success": False, "message": f"Internal Server Error: {e}"}),

@@ -17,8 +17,8 @@ def parse_users(xml_content):
         root = ET.fromstring(xml_content)
         users = []
 
-        for user_elem in root.findall("usuario"):
-            # Crear una instancia de User a partir del XML
+        for user_elem in root.findall("solicitante"):
+
             user = User(
                 user_id=user_elem.get("id"),
                 pwd=user_elem.get("pwd"),
@@ -29,10 +29,9 @@ def parse_users(xml_content):
                 profile_url=user_elem.find("perfil").text or "",
             )
 
-            # Validar cada campo utilizando las funciones específicas
             if (
                 validate_user_id(user.user_id)
-                and user.pwd  # No se valida aquí la contraseña, pero es requerida
+                and user.pwd
                 and validate_email(user.email)
                 and validate_phone(user.phone_number)
             ):
@@ -59,21 +58,18 @@ def parse_image(xml_content, user_id):
         ValueError: If the XML structure is invalid or contains missing data.
     """
     try:
-        # Parsear el contenido XML
         tree = ET.ElementTree(ET.fromstring(xml_content))
         root = tree.getroot()
 
         if root.tag != "figura":
             raise ValueError("Invalid XML structure: Root tag must be 'figura'.")
 
-        # Extraer el nombre de la figura
         name_elem = root.find("nombre")
         if name_elem is None or not name_elem.text:
             raise ValueError("Missing or invalid 'nombre' tag.")
 
         image_name = name_elem.text
 
-        # Extraer los píxeles
         design_elem = root.find("diseño")
         if design_elem is None:
             raise ValueError("Missing 'diseño' tag.")
@@ -90,9 +86,8 @@ def parse_image(xml_content, user_id):
             except (ValueError, TypeError) as e:
                 raise ValueError(f"Invalid pixel data: {e}")
 
-        # Crear el objeto Image
         return Image(
-            id=None,  # El ID se asignará posteriormente
+            id=None,
             user_id=user_id,
             name=image_name,
             pixels=pixels,
