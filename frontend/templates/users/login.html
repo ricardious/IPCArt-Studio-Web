@@ -3,18 +3,17 @@
 {% block content %}
 <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-sm"></div>
 <div
-    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full md:w-11/12 lg:w-3/4 h-[550px] bg-pixel bg-no-repeat bg-cover bg-center rounded-lg mt-8 font-title">
+    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-11/12 lg:w-3/4 h-[550px] bg-pixel bg-no-repeat bg-cover bg-center rounded-lg mt-8 font-title">
     <div
         class="hidden md:flex absolute top-0 left-0 w-[58%] h-full bg-transparent md:p-8 lg:p-[80px] text-[#e4e4e4] justify-between flex-col">
         <div class="flex items-center space-x-4">
-            <img src="{% static 'images/dino.png' %}" alt="Logo" class="w-8 md:w-10 lg:w-12 h-8 md:h-10 lg:h-12">
+            <img src="{% static 'images/cute_pet.png' %}" alt="Logo" class="w-8 md:w-10 lg:w-12 h-8 md:h-10 lg:h-12">
             <h2 class="text-2xl md:text-3xl lg:text-[40px] font-bold">IPCArt-Studio</h2>
         </div>
         <div class="text-sci">
             <h2 class="text-3xl md:text-4xl lg:text-[50px] leading-[1]">Welcome <br><span
-                    class="text-xl md:text-2xl lg:text-[30px]">To Our New Website.</span></h2>
-            <p class="text-base md:text-lg lg:text-[20px] my-3 md:my-4 lg:my-5">Lorem ipsum dolor sit, amet consectetur
-                adipisicing elit. Ipsum, nulla?</p>
+                    class="text-xl md:text-2xl lg:text-[30px]">To Your Pixel Art Studio.</span></h2>
+            <p class="text-base md:text-lg lg:text-[20px] my-3 md:my-4 lg:my-5">Create, share, and explore amazing pixel art. Your imagination is the only limit.</p>
 
             <div class="flex space-x-[15px] text-lg md:text-xl lg:text-[22px]">
                 <a href="#" class="hover:scale-125 transition ease-in-out duration-500">
@@ -35,7 +34,7 @@
     <div class="absolute top-0 right-0 w-full md:w-[calc(100%-45%)] lg:w-[calc(100%-58%)] h-full">
         <div
             class="flex justify-center items-center w-full h-full bg-transparent backdrop-blur-[20px] rounded-lg md:rounded-tr-[10px] md:rounded-br-[10px] text-[#e4e4e4]">
-            <form method="post" action="{% url 'login' %}" class="w-[340px] md:w-[400px] lg:w-[340px] px-4 md:px-0">
+            <form method="post" action="{% url 'login' %}" class="w-full max-w-[340px] md:max-w-[400px] lg:max-w-[340px] px-4 md:px-0">
                 {% csrf_token %}
                 <h2 class="text-2xl md:text-3xl lg:text-[38px] text-center">Sign In</h2>
                 <div class="relative w-full h-[50px] border-b-2 border-gray-300 my-5 md:my-6 lg:my-[30px]">
@@ -66,6 +65,21 @@
                 <button type="submit"
                     class="w-full h-[45px] bg-[#6710c4] border-none outline-none rounded-[4px] cursor-pointer text-sm md:text-base lg:text-[16px] text-[#e4e4e4] font-medium shadow-md shadow-[rgba(0,0,0,0.5)]">Sign
                     In</button>
+
+                <div class="flex md:hidden justify-center space-x-[15px] text-lg mt-8">
+                    <a href="#" class="hover:scale-125 transition ease-in-out duration-500">
+                        <i class="bx bxl-github text-[#e4e4e4]"></i>
+                    </a>
+                    <a href="#" class="hover:scale-125 transition ease-in-out duration-500">
+                        <i class="bx bxl-python text-[#e4e4e4]"></i>
+                    </a>
+                    <a href="#" class="hover:scale-125 transition ease-in-out duration-500">
+                        <i class="bx bxl-django text-[#e4e4e4]"></i>
+                    </a>
+                    <a href="#" class="hover:scale-125 transition ease-in-out duration-500">
+                        <i class="bx bxl-flask text-[#e4e4e4]"></i>
+                    </a>
+                </div>
             </form>
         </div>
     </div>
