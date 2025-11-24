@@ -48,3 +48,6 @@ frontend/.env
 
 # Ignorar dependencias externas no necesarias
 *.lock
+
+# Ignorar archivos de base de datos generados
+database/
