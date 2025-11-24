@@ -1,14 +1,13 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.conf import settings
 import plotly.graph_objs as go
 from plotly.offline import plot
 
 
 GLOBAL_CONTEXT = {"file_content": None, "binary_file": None, "file_name": None}
-ENDPOINT = "http://localhost:4000/"
+ENDPOINT = settings.BACKEND_ENDPOINT
 
 
 def login_view(request):
@@ -257,6 +256,5 @@ def statistics(request):
 
 
 def logout(request):
-    # Clear the session
     request.session.flush()
     return redirect("/login")
