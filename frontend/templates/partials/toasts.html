@@ -1,8 +1,8 @@
 {% if messages %}
 <div class="toast-container">
     {% for message in messages %}
-    <div id="toast-{{ message.tags }}"
-        class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 animate-toast"
+    <div id="toast-{{ forloop.counter }}"
+        class="toast-item flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert">
         {% if message.tags == 'success' %}
         <div
@@ -32,8 +32,51 @@
             </svg>
         </div>
         {% endif %}
-        <div class="ml-3 text-sm font-normal">{{ message }}</div>
+        <div class="ml-3 text-sm font-normal truncate max-w-[200px]" title="{{ message }}">{{ message }}</div>
     </div>
     {% endfor %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toasts = document.querySelectorAll('.toast-item');
+
+        toasts.forEach(toast => {
+            let timeout;
+
+            // Entry animation
+            toast.style.transform = 'translateX(100%)';
+            toast.style.opacity = '0';
+            toast.style.transition = 'all 0.3s ease-in-out';
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+                toast.style.opacity = '1';
+            }, 10);
+
+            // Function to start fade out timer
+            function startFadeOut() {
+                timeout = setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            // Start timer
+            startFadeOut();
+
+            // Pause on hover
+            toast.addEventListener('mouseenter', () => {
+                clearTimeout(timeout);
+                toast.style.opacity = '1';
+            });
+
+            // Resume on mouse leave
+            toast.addEventListener('mouseleave', () => {
+                startFadeOut();
+            });
+        });
+    });
+</script>
 {% endif %}
