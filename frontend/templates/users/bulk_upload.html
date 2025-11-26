@@ -67,19 +67,63 @@
                 </a>
             </div>
 
+            <!-- Display error/success messages inside modal -->
+            {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                <div
+                    class="p-3 rounded-lg mb-2 text-sm {% if message.tags == 'error' %}bg-red-500/20 text-red-300 border border-red-500/30{% elif message.tags == 'success' %}bg-green-500/20 text-green-300 border border-green-500/30{% else %}bg-blue-500/20 text-blue-300 border border-blue-500/30{% endif %}">
+                    <i
+                        class='bx {% if message.tags == "error" %}bx-error-circle{% elif message.tags == "success" %}bx-check-circle{% else %}bx-info-circle{% endif %} mr-2'></i>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <form method="POST" enctype="multipart/form-data" action="{% url 'bulk_upload' %}?show_modal=true">
                 {% csrf_token %}
-                <div class="rounded-lg border-2 border-gray-200/20 border-dashed">
+                <!-- Drag & Drop area -->
+                <div id="dropZone"
+                    class="rounded-lg border-2 border-gray-200/20 border-dashed mt-6 transition-colors duration-200">
                     <div class="p-4 min-h-[180px] flex flex-col items-center justify-center text-center cursor-pointer">
-                        <i class='bx bx-cloud-upload text-5xl mb-4 text-gray-400'></i>
-                        <h4 class="text-sm text-gray-300">
+                        <i id="dropIcon"
+                            class='bx bx-cloud-upload text-5xl mb-4 text-gray-400 transition-colors duration-200'></i>
+                        <h4 id="dropText" class="text-sm text-gray-300 transition-colors duration-200">
                             Drag & Drop or
                             <label for="chooseFile" class="text-blue-400 cursor-pointer hover:text-blue-300">
                                 Choose file
                             </label>
                             to upload
                         </h4>
-                        <input type="file" id="chooseFile" name="file" class="hidden" multiple />
+                        <input type="file" id="chooseFile" name="file" class="hidden" accept=".xml" />
+                    </div>
+                </div>
+
+                <!-- File preview card (shown when file is selected) -->
+                <div id="filePreview" class="hidden mt-4">
+                    <div class="flex flex-col bg-black/20 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center mr-3">
+                                <i class='bx bx-file text-2xl text-blue-400'></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p id="previewFileName" class="text-sm text-white truncate"></p>
+                                <p id="previewFileSize" class="text-xs text-gray-400"></p>
+                            </div>
+                            <button type="button" id="removeFile" class="text-gray-400 hover:text-red-500 ml-2">
+                                <i class='bx bx-x text-xl'></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-3">
+                            <div class="bg-gray-700 rounded-full w-full h-2 overflow-hidden">
+                                <div id="progressBar"
+                                    class="h-full rounded-full bg-blue-500 transition-all duration-300 ease-out"
+                                    style="width: 0%"></div>
+                            </div>
+                            <p id="progressText" class="text-xs text-gray-400 mt-1">Ready to upload</p>
+                        </div>
                     </div>
                 </div>
 
@@ -142,4 +186,128 @@
         
         </div>
     </div>
+
+<!-- Drag & Drop JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('chooseFile');
+        const dropIcon = document.getElementById('dropIcon');
+        const dropText = document.getElementById('dropText');
+
+        // File preview elements
+        const filePreview = document.getElementById('filePreview');
+        const previewFileName = document.getElementById('previewFileName');
+        const previewFileSize = document.getElementById('previewFileSize');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const removeFileBtn = document.getElementById('removeFile');
+
+        if (!dropZone || !fileInput) return;
+
+        // Prevent default drag behaviors on document
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when dragging over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropZone.classList.add('border-blue-400', 'bg-blue-400/10');
+            dropZone.classList.remove('border-gray-200/20');
+            dropIcon.classList.add('text-blue-400');
+            dropIcon.classList.remove('text-gray-400');
+        }
+
+        function unhighlight() {
+            dropZone.classList.remove('border-blue-400', 'bg-blue-400/10');
+            dropZone.classList.add('border-gray-200/20');
+            dropIcon.classList.remove('text-blue-400');
+            dropIcon.classList.add('text-gray-400');
+        }
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                showFilePreview(files[0]);
+            }
+        }
+
+        // Handle file selection via input
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                showFilePreview(this.files[0]);
+            }
+        });
+
+        // Format file size to human readable
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Show file preview card with animated progress bar
+        function showFilePreview(file) {
+            previewFileName.textContent = file.name;
+            previewFileSize.textContent = formatFileSize(file.size);
+            filePreview.classList.remove('hidden');
+
+            // Reset and animate progress bar
+            progressBar.style.width = '0%';
+            progressText.textContent = 'Processing...';
+
+            // Simulate loading animation
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    progressText.textContent = 'Ready to upload';
+                    progressBar.classList.remove('bg-blue-500');
+                    progressBar.classList.add('bg-green-500');
+                }
+                progressBar.style.width = progress + '%';
+            }, 100);
+        }
+
+        // Remove file button
+        removeFileBtn.addEventListener('click', function () {
+            fileInput.value = '';
+            filePreview.classList.add('hidden');
+            progressBar.style.width = '0%';
+            progressBar.classList.remove('bg-green-500');
+            progressBar.classList.add('bg-blue-500');
+            progressText.textContent = 'Ready to upload';
+        });
+
+        // Make entire drop zone clickable
+        dropZone.addEventListener('click', function (e) {
+            if (e.target.tagName !== 'LABEL' && e.target.tagName !== 'INPUT') {
+                fileInput.click();
+            }
+        });
+    });
+</script>
 {% endblock %}
