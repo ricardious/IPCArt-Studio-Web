@@ -4,120 +4,118 @@
 <input type="checkbox" id="sidebar-toggle" class="hidden" />
 
 <!-- Hamburger Menu Button (Mobile Only) -->
-<label for="sidebar-toggle" 
+<label for="sidebar-toggle"
     class="md:hidden fixed top-4 right-4 z-50 p-3 bg-[rgba(255,255,255,0.3)] backdrop-blur-[5px] rounded-lg shadow-lg hover:bg-[rgba(255,255,255,0.5)] transition-all duration-300 cursor-pointer">
     <i class='bx bx-menu text-[28px]'></i>
 </label>
 
 <!-- Overlay (Mobile Only) -->
-<label for="sidebar-toggle" 
+<label for="sidebar-toggle"
     class="sidebar-overlay md:hidden fixed inset-0 bg-black/50 z-30 opacity-0 pointer-events-none transition-opacity duration-300 cursor-pointer"></label>
 
 <!-- Sidebar -->
-<div
-    class="side-nav group w-[110px] h-screen fixed top-0 left-0 p-[30px_15px] bg-[rgba(255,255,255,0.2)] backdrop-blur-[5px] flex justify-between flex-col hover:w-[250px] transition-all duration-500 z-40
+<div class="side-nav group w-[110px] h-screen fixed top-0 left-0 p-[30px_15px] bg-[rgba(255,255,255,0.2)] backdrop-blur-[5px] flex justify-between flex-col hover:w-[250px] transition-all duration-500 z-40
     max-md:w-[280px] max-md:-translate-x-full max-md:hover:w-[280px]">
 
     <!-- User Profile -->
-    <div
-        class="user flex items-center justify-between w-[60px] text-[12px] p-2 rounded-lg mx-auto overflow-hidden group-hover:w-full group-hover:bg-[rgba(255,255,255,0.2)] group-hover:backdrop-blur-[5px] transition-all duration-300
+    <div class="user flex items-center justify-between w-[60px] text-[12px] p-2 rounded-lg mx-auto overflow-hidden group-hover:w-full group-hover:bg-[rgba(255,255,255,0.2)] group-hover:backdrop-blur-[5px] transition-all duration-300
         max-md:w-full max-md:bg-[rgba(255,255,255,0.2)] max-md:backdrop-blur-[5px]">
-        
+
         {% if user.role == "admin" %}
-            <img src="{% static 'images/dino.png' %}" alt="Admin Image"
-                class="w-[40px] rounded-full m-auto group-hover:mx-0 transition-all duration-300 max-md:mx-0">
-            <div class="hidden group-hover:block max-md:block">
-                <h2 class="text-[15px] font-semibold whitespace-nowrap">AdminIPC</h2>
-                <p>{{ user.email }}</p>
-            </div>
-            <i class='bx bxs-invader' id="invader"></i>
+        <img src="{% static 'images/cute_pet.png' %}" alt="Admin Image"
+            class="w-[40px] rounded-full m-auto group-hover:mx-0 transition-all duration-300 max-md:mx-0">
+        <div class="hidden group-hover:block max-md:block">
+            <h2 class="text-[15px] font-semibold whitespace-nowrap">AdminIPC</h2>
+            <p>{{ user.email }}</p>
+        </div>
+        <i class='bx bxs-invader' id="invader"></i>
         {% else %}
-            <img src="{{ user.profile_url }}" alt="{{ user.full_name }}"
-                class="w-[40px] rounded-full m-auto group-hover:mx-0 transition-all duration-300 max-md:mx-0">
-            <div class="hidden group-hover:block max-md:block">
-                <h2 class="text-[15px] font-semibold whitespace-nowrap">{{ user.full_name }}</h2>
-                <p>{{ user.email }}</p>
-            </div>
-            <i class='bx bxs-paint' id="invader"></i>
+        <img src="{{ user.profile_url }}" alt="{{ user.full_name }}"
+            class="w-[40px] rounded-full m-auto group-hover:mx-0 transition-all duration-300 max-md:mx-0">
+        <div class="hidden group-hover:block max-md:block">
+            <h2 class="text-[15px] font-semibold whitespace-nowrap">{{ user.full_name }}</h2>
+            <p>{{ user.email }}</p>
+        </div>
+        <i class='bx bxs-paint' id="invader"></i>
         {% endif %}
     </div>
 
     <!-- Main Menu -->
     <ul class="list-none p-[0_15px]">
         {% if user.role == "admin" %}
-            <!-- Administrator Menu -->
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'admin_dashboard' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bxs-dashboard text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Dashboard</p>
-                </a>
-            </li>
+        <!-- Administrator Menu -->
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'admin_dashboard' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bxs-dashboard text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Dashboard</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'bulk_upload' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bx-upload text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Bulk Upload</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'bulk_upload' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bx-upload text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Bulk Upload</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'view_users' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bxs-user-account text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">View Users</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'view_users' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bxs-user-account text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">View Users</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'view_xml' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bxs-file-find text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">View XML</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'view_xml' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bxs-file-find text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">View XML</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'statistics' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bxs-bar-chart-alt-2 text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">View Statistics</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'statistics' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bxs-bar-chart-alt-2 text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">View Statistics</p>
+            </a>
+        </li>
         {% else %}
-            <!-- Regular User Menu -->
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'gallery' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bx-photo-album text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Gallery</p>
-                </a>
-            </li>
+        <!-- Regular User Menu -->
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'gallery' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bx-photo-album text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Gallery</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'upload_image' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bx-image-add text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Upload Image</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'upload_image' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bx-image-add text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Upload Image</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'image_editor' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bxs-edit text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Image Editor</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'image_editor' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bxs-edit text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Image Editor</p>
+            </a>
+        </li>
 
-            <li class="my-[30px] max-md:my-[20px]">
-                <a href="{% url 'help' %}"
-                    class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
-                    <i class='bx bx-help-circle text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
-                    <p class="whitespace-nowrap hidden group-hover:block max-md:block">Help</p>
-                </a>
-            </li>
+        <li class="my-[30px] max-md:my-[20px]">
+            <a href="{% url 'help' %}"
+                class="flex items-center justify-center cursor-pointer group-hover:justify-start max-md:justify-start">
+                <i class='bx bx-help-circle text-[30px] mr-0 group-hover:mr-[10px] max-md:mr-[10px]'></i>
+                <p class="whitespace-nowrap hidden group-hover:block max-md:block">Help</p>
+            </a>
+        </li>
         {% endif %}
     </ul>
 
