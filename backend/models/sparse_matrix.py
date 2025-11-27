@@ -434,3 +434,142 @@ class SparseMatrix:
         image_data = dot.pipe()
         image_base64 = base64.b64encode(image_data).decode("utf-8")
         return image_base64
+
+    def plot_v2(self):
+        try:
+            # Usamos listas para construir el string por partes (chunks)
+            # Esto evita que Python se congele re-asignando memoria para strings gigantes
+            header_parts = [
+                "digraph G {",
+                '    graph [pad="0.5", nodesep="1", ranksep="1"];',
+                '    label="Sparse Matrix"',
+                "    node [shape=box, height=0.8];\n",
+            ]
+
+            row_definitions = []
+            row_connections = []
+            inner_nodes = []
+            inner_ranks = []
+
+            # 1. PLOT FROM ROWS
+            currentRow = self.rows.first
+
+            while currentRow != None:
+                first = True
+                current = currentRow.access
+
+                # Definición del Header de Fila
+                row_definitions.append(
+                    f'\tRow{current.x}[style="filled" label="{currentRow.id}" fillcolor="white" group=0];'
+                )
+
+                # Conexión entre Headers de Fila
+                if currentRow.next != None:
+                    row_connections.append(
+                        f"\tRow{current.x} -> Row{currentRow.next.access.x};"
+                    )
+
+                # Rango (alineación horizontal)
+                rank_group = [f"Row{current.x}"]
+
+                while current != None:
+                    # Nodo interno
+                    node_id = f"NodeR{current.x}_C{current.y}"
+                    inner_nodes.append(
+                        f'\t{node_id}[style="filled" label="{current.value}" fillcolor="{current.value}" fontcolor="{current.value}" group={current.y}];'
+                    )
+                    rank_group.append(node_id)
+
+                    # Conexiones
+                    if first:
+                        # Header -> Primer Nodo
+                        inner_nodes.append(f'\tRow{current.x} -> {node_id}[dir=""];')
+                        if current.right:
+                            inner_nodes.append(
+                                f"\t{node_id} -> NodeR{current.right.x}_C{current.right.y};"
+                            )
+                        first = False
+                    else:
+                        if current.right:
+                            inner_nodes.append(
+                                f"\t{node_id} -> NodeR{current.right.x}_C{current.right.y};"
+                            )
+
+                    current = current.right
+
+                # Cerrar el rank de esta fila
+                inner_ranks.append(f'\t{{ rank = same; {"; ".join(rank_group)}; }}')
+                currentRow = currentRow.next
+
+            # 2. PLOT COLUMNS
+            col_definitions = []
+            col_connections = []
+            col_ranks = ["\t{ rank = same;"]
+
+            currentColumn = self.columns.first
+            while currentColumn != None:
+                first = True
+                current = currentColumn.access
+
+                # Definición Header Columna
+                col_definitions.append(
+                    f'\tColumn{current.y}[style="filled" label="{current.y}" fillcolor="white" group={current.y}];'
+                )
+                col_ranks.append(f"Column{current.y};")
+
+                # Conexión entre Headers Columna
+                if currentColumn.next != None:
+                    col_connections.append(
+                        f"\tColumn{current.y} -> Column{currentColumn.next.access.y};"
+                    )
+
+                while current != None:
+                    node_id = f"NodeR{current.x}_C{current.y}"
+                    if first:
+                        col_connections.append(
+                            f'\tColumn{current.y} -> {node_id}[dir=""];'
+                        )
+                        if current.down:
+                            col_connections.append(
+                                f"\t{node_id} -> NodeR{current.down.x}_C{current.down.y};"
+                            )
+                        first = False
+                    else:
+                        if current.down:
+                            col_connections.append(
+                                f"\t{node_id} -> NodeR{current.down.x}_C{current.down.y};"
+                            )
+                    current = current.down
+
+                currentColumn = currentColumn.next
+
+            col_ranks.append("}")
+
+            # Ensamblar todo el código DOT uniendo las listas (mucho más rápido que concatenar strings)
+            full_dot_parts = (
+                header_parts
+                + row_definitions
+                + ['    edge[dir="both"];']
+                + row_connections
+                + ['    edge[dir="both"];']
+                + col_definitions
+                + col_connections
+                + ["".join(col_ranks)]
+                + inner_nodes
+                + inner_ranks
+                + ["}"]
+            )
+
+            dotcode = "\n".join(full_dot_parts)
+
+            # Generar la imagen
+            graph = Source(dotcode, format="svg")
+            image_data = graph.pipe()
+            image_base64 = base64.b64encode(image_data).decode("utf-8")
+
+            return image_base64
+
+        except Exception as e:
+            print(f"Error generating plot: {e}")
+            # Retornar un string vacío o una imagen de error en base64 si falla
+            return ""
