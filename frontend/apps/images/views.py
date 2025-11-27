@@ -1,10 +1,11 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.conf import settings
 
 
 GLOBAL_CONTEXT = {"file_content": None, "image_preview": None}
-ENDPOINT = "http://localhost:4000/"
+ENDPOINT = settings.BACKEND_ENDPOINT
 
 
 def gallery(request):
