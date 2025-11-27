@@ -55,7 +55,13 @@ def login_view(request):
                     else:
                         messages.error(request, "Failed to fetch user details.")
             else:
-                messages.error(request, data.get("message", "Invalid credentials."))
+                # Get error message from response if available
+                try:
+                    error_data = response.json()
+                    error_message = error_data.get("message", "Invalid credentials.")
+                except:
+                    error_message = "Invalid credentials."
+                messages.error(request, error_message)
         except requests.exceptions.RequestException as e:
             messages.error(request, f"Error connecting to the server: {str(e)}")
 
