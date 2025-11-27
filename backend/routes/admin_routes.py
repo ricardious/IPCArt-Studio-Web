@@ -65,7 +65,7 @@ def get_all_users():
                 "CorreoElectronico": user.email,
                 "NumeroTelefono": user.phone_number,
                 "Direccion": user.address,
-                "perfil": user.profile_url,
+                "Perfil": user.profile_url,
             }
             for user in users
         ]
@@ -102,7 +102,7 @@ def export_users_as_xml():
             ET.SubElement(user_elem, "CorreoElectronico").text = escape(user.email)
             ET.SubElement(user_elem, "NumeroTelefono").text = escape(user.phone_number)
             ET.SubElement(user_elem, "Direccion").text = escape(user.address)
-            ET.SubElement(user_elem, "perfil").text = escape(user.profile_url)
+            ET.SubElement(user_elem, "Perfil").text = escape(user.profile_url)
 
             images_elem = ET.SubElement(user_elem, "imagenes")
             images = image_service.get_images_by_user_id(user.user_id)

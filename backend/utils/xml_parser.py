@@ -17,7 +17,7 @@ def parse_users(xml_content):
         root = ET.fromstring(xml_content)
         users = []
 
-        for user_elem in root.findall("solicitante"):
+        for user_elem in root.findall("usuario"):
 
             user = User(
                 user_id=user_elem.get("id"),
@@ -26,7 +26,7 @@ def parse_users(xml_content):
                 email=user_elem.find("CorreoElectronico").text or "",
                 phone_number=user_elem.find("NumeroTelefono").text or "",
                 address=user_elem.find("Direccion").text or "",
-                profile_url=user_elem.find("perfil").text or "",
+                profile_url=user_elem.find("Perfil").text or "",
             )
 
             if (

@@ -1,14 +1,18 @@
+from services.user_service import UsersService
+
+
 class AuthService:
-    def __init__(self, db_manager):
-        self.db_manager = db_manager
-        # Credenciales fijas para el administrador
+    def __init__(self, users_service: UsersService | None = None):
+        self.users_service = users_service or UsersService()
+
+        # Fixed admin credentials
         self.admin_credentials = {
             "username": "AdminIPC",
             "password": "ARTIPC2",
         }
 
-    def login(self, username, password):
-        # Validar credenciales del administrador
+    def login(self, username: str, password: str) -> dict:
+        # Validate admin credentials
         if (
             username == self.admin_credentials["username"]
             and password == self.admin_credentials["password"]
@@ -20,8 +24,8 @@ class AuthService:
                 "user_id": "admin",
             }
 
-        # Validar credenciales de usuarios en el archivo XML
-        user = self.db_manager.get_user(username)
+        user = self.users_service.get_user_by_id(username)
+        # Validate user credentials
         if user and user.pwd == password:
             return {
                 "status": "success",

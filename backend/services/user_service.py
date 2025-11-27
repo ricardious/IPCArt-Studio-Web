@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
 import os
-from datetime import datetime
 from xml.dom import minidom
 from models.user import User
 
@@ -13,7 +12,10 @@ class UsersService:
 
     def __init__(self):
         """Initialize Users Service with storage paths."""
-        self.storage_path = os.path.abspath("database")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        self.storage_path = os.path.join(project_root, "database")
+        self.storage_path = os.path.abspath(self.storage_path)
         self.users_file = os.path.join(self.storage_path, "usuarios.xml")
 
         # Create storage directory if it doesn't exist
@@ -63,7 +65,7 @@ class UsersService:
                 ET.SubElement(user_elem, "CorreoElectronico").text = user.email
                 ET.SubElement(user_elem, "NumeroTelefono").text = user.phone_number
                 ET.SubElement(user_elem, "Direccion").text = user.address
-                ET.SubElement(user_elem, "perfil").text = user.profile_url
+                ET.SubElement(user_elem, "Perfil").text = user.profile_url
 
             self._write_pretty_xml(tree)
 
@@ -89,7 +91,7 @@ class UsersService:
                     email=user_elem.find("CorreoElectronico").text or "",
                     phone_number=user_elem.find("NumeroTelefono").text or "",
                     address=user_elem.find("Direccion").text or "",
-                    profile_url=user_elem.find("perfil").text or "",
+                    profile_url=user_elem.find("Perfil").text or "",
                 )
                 users.append(user)
 
@@ -110,7 +112,7 @@ class UsersService:
             tree = ET.parse(self.users_file)
             root = tree.getroot()
 
-            # Buscar al usuario por su username
+            # Find user by username
             user_elem = root.find(f"./usuario[@id='{username}']")
             if user_elem is not None:
                 return User(
@@ -120,7 +122,7 @@ class UsersService:
                     email=user_elem.find("CorreoElectronico").text or "",
                     phone_number=user_elem.find("NumeroTelefono").text or "",
                     address=user_elem.find("Direccion").text or "",
-                    profile_url=user_elem.find("perfil").text or "",
+                    profile_url=user_elem.find("Perfil").text or "",
                 )
             return None
 
@@ -129,14 +131,14 @@ class UsersService:
 
     def get_user_dict(self, user_id):
         """
-        Devuelve un diccionario con los datos de un usuario dado su ID.
+        Returns a dictionary with the user data given their ID.
         Args:
-            user_id (str): El ID del usuario.
+            user_id (str): The user ID.
         Returns:
-            dict: Diccionario con los datos del usuario si existe, de lo contrario None.
+            dict: Dictionary with user data if exists, otherwise None.
         """
         try:
-            user = self.get_user_by_id(user_id)  # Usamos la función existente
+            user = self.get_user_by_id(user_id)  # Use existing function
             if user:
                 return {
                     "id": user.user_id,
@@ -144,7 +146,7 @@ class UsersService:
                     "CorreoElectronico": user.email,
                     "NumeroTelefono": user.phone_number,
                     "Direccion": user.address,
-                    "perfil": user.profile_url,
+                    "Perfil": user.profile_url,
                 }
             return None
         except Exception as e:
@@ -172,7 +174,7 @@ class UsersService:
             ET.SubElement(user_elem, "CorreoElectronico").text = user.email
             ET.SubElement(user_elem, "NumeroTelefono").text = user.phone_number
             ET.SubElement(user_elem, "Direccion").text = user.address
-            ET.SubElement(user_elem, "perfil").text = user.profile_url
+            ET.SubElement(user_elem, "Perfil").text = user.profile_url
 
             self._write_pretty_xml(tree)
             return True

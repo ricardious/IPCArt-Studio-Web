@@ -1,28 +1,27 @@
 import os
 from flask import Blueprint, request, jsonify
 from services.auth_service import AuthService
-from database.db_manager import DBManager
+from services.user_service import UsersService
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(os.path.dirname(current_dir), "database", "usuarios.xml")
 
-# Configuración del archivo XML y AuthService
-db_manager = DBManager(db_path)
-auth_service = AuthService(db_manager)
+users_service = UsersService()
 
-# Crear un Blueprint para las rutas de autenticación
+# XML file configuration and AuthService
+auth_service = AuthService(users_service)
+
+# Blueprint for authentication routes
 auth_router = Blueprint("auth", __name__)
 
 
 @auth_router.route("/login", methods=["POST"])
 def login():
     """
-    Endpoint para iniciar sesión.
-    Espera un JSON con 'username' y 'password'.
-    Devuelve un mensaje de éxito o error según la autenticación.
+    Login endpoint.
+    Expects a JSON with 'username' and 'password'.
+    Returns a success or error message based on authentication.
     """
     try:
-        # Obtener datos del cuerpo de la solicitud
+        # Get data from request body
         data = request.get_json()
         if not data or "username" not in data or "password" not in data:
             return (
@@ -35,14 +34,14 @@ def login():
         username = data["username"]
         password = data["password"]
 
-        # Lógica de autenticación
+        # Authentication logic
         response = auth_service.login(username, password)
         if response["status"] == "success":
             return jsonify(response), 200
         else:
             return jsonify(response), 401
     except Exception as e:
-        # Manejo de errores generales
+        # General error handling
         return (
             jsonify({"status": "error", "message": f"Internal Server Error: {str(e)}"}),
             500,
